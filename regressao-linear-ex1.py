@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 @file regressao-linear-ex1.py
 @brief Exercise 2 - Linear Regression implementation with visualization.
@@ -268,7 +269,7 @@ def main():
     # Após os testes, inicializamos os parâmetros theta com valores diferentes de zero.
     # theta = [8.5, 4.0] é o ponto de partida padrão. Foi estabelecido empiricamente ao olhar os gráficos.
     # Você pode experimentar outros valores para ver como o algoritmo se comporta.
-    theta = np.array([8.5, 4.0])
+    theta = np.array([0,0])
     # o vetor theta, a taxa de aprendizado (alpha) e o número de iterações.
     # A função retorna os parâmetros ajustados (theta), o histórico de custos (J_history) e o histórico de theta (theta_history).
     # O histórico de custos é usado para visualizar a convergência do algoritmo.
@@ -433,3 +434,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
