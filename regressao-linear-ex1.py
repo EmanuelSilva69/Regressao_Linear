@@ -27,7 +27,86 @@ from Functions.plot_data import plot_data
 from Functions.compute_cost import compute_cost
 from Functions.gradient_descent import gradient_descent
 
+def experimento_taxas_aprendizado(x_aug, y, iterations):# código do experimento 1 aqui
+    # === EXPERIMENTO 1: Comparação de Taxas de Aprendizado === fiz isso daqui só pra não ficar tão grande o main
+    # Esse experimento compara o desempenho do algoritmo de descida do gradiente
+    print("\n📌 Experimento 1: Comparando diferentes taxas de aprendizado (α)")
 
+    # Solicita ao usuário três valores de alpha separados por vírgula
+    alphas_input = input("Digite três valores para a taxa de aprendizado (α), separados por vírgula (ex: 0.001, 0.01, 0.1): ")
+
+    # Converte a string digitada para uma lista de floats
+    alphas = [float(val.strip()) for val in alphas_input.split(",") if val.strip()]
+
+    # Cores para os gráficos (até 6 alphas suportadas)
+    colors = ['r', 'g', 'b', 'c', 'm', 'y']
+
+    # Inicializa theta como vetor de zeros, fixo para todas as comparações
+    theta_init = np.zeros(2)
+
+    # Cria gráfico de convergência
+    plt.figure(figsize=(8, 5))
+
+    # Executa gradient descent para cada alpha fornecido
+    for i, alpha_val in enumerate(alphas):
+        _, J_hist, _ = gradient_descent(x_aug, y, theta_init.copy(), alpha_val, iterations)
+        plt.plot(np.arange(1, iterations + 1), J_hist, colors[i % len(colors)], label=f'α = {alpha_val}')
+
+    # Ajustes de visualização do gráfico
+    plt.xlabel('Iterações')
+    plt.ylabel('Custo J(θ)')
+    plt.title('Convergência da Função de Custo para Diferentes Taxas de Aprendizado')
+    plt.legend()
+    plt.grid(True)
+
+    # Salva o gráfico como imagem
+    plt.savefig("Figures/experimento_taxa_aprendizado.png", dpi=300)
+    plt.show()
+def experimento_inicializacoes(x_aug, y, iterations, theta0_vals, theta1_vals, j_vals):# código do experimento 2 aqui
+    # === EXPERIMENTO 2: Comparação de Inicializações de Pesos (θ) === Mesma coisa do outro, só que com inicializações. Fiz assim mais pra não ficar tão grande o main, e tbm acho que ficou livre pra gente escolher né?
+    # Esse experimento compara o desempenho do algoritmo de descida do gradiente
+    print("\n📌 Experimento 2: Comparando diferentes inicializações dos pesos θ")
+
+    # Lista para armazenar as inicializações fornecidas
+    theta_inputs = []
+
+    # Solicita 3 inicializações manuais (fixas) ao usuário
+    print("Digite 3 inicializações fixas para θ, no formato 'θ0 θ1' (ex: 0 0 ou -5 5):")
+    for i in range(1, 4):
+        entrada = input(f"Inicialização fixa {i}: ")
+        try:
+            valores = [float(v.strip()) for v in entrada.split()]
+            if len(valores) == 2:
+                theta_inputs.append(np.array(valores))
+            else:
+                print("❗ Formato inválido. Usando [0, 0] por padrão.")
+                theta_inputs.append(np.array([0.0, 0.0]))
+        except ValueError:
+            print("❗ Entrada inválida. Usando [0, 0] por padrão.")
+            theta_inputs.append(np.array([0.0, 0.0]))
+
+    # Adiciona 3 inicializações aleatórias (simulando casos reais de random init)
+    for _ in range(3):
+        theta_inputs.append(np.random.randn(2))  # distribuição normal
+
+    # Cria o gráfico de contorno da função de custo
+    plt.figure(figsize=(8, 6))
+    plt.contour(theta0_vals, theta1_vals, j_vals, levels=np.logspace(-2, 3, 20))
+    plt.xlabel(r'$\theta_0$')
+    plt.ylabel(r'$\theta_1$')
+    plt.title('Trajetórias do Gradiente para Diferentes Inicializações de θ')
+    plt.grid(True)
+
+    # Traça a trajetória do gradiente para cada θ inicial
+    for i, init_theta in enumerate(theta_inputs):
+        _, _, th_hist = gradient_descent(x_aug, y, init_theta.copy(), alpha=0.01, num_iters=iterations)
+        label = f'init {i+1}: {init_theta.round(2)}'
+        plt.plot(th_hist[:, 0], th_hist[:, 1], marker='o', markersize=3, label=label)
+
+    # Finaliza e salva o gráfico
+    plt.legend(fontsize=8)
+    plt.savefig("Figures/experimento_inicializacao_pesos.png", dpi=300)
+    plt.show()
 def main():
     """
     @brief Executa todos os passos do exercício de regressão linear.
@@ -60,7 +139,7 @@ def main():
 
     @return None
     """
-
+    # Configurações do matplotlib para salvar figuras em alta qualidade
     # Garante que a pasta de figuras existe
     os.makedirs("Figures", exist_ok=True)
 
@@ -332,6 +411,25 @@ def main():
     plt.savefig("Figures/superficie_trajetoria.svg", format='svg', bbox_inches='tight')
     plt.show()
 
+    #Experimentos aqui:
+    # === EXPERIMENTOS COMPARATIVOS INTERATIVOS ===
+
+    # 1. Comparando diferentes taxas de aprendizado (α)
+    # ------------------------------------------------
+    # Código completo para solicitar 3 valores de α via input()
+    # Executar gradient descent para cada α
+    # Plotar gráfico comparativo de convergência
+    # Salvar e mostrar o gráfico
+
+    # 2. Comparando diferentes inicializações dos pesos (θ)
+    # -----------------------------------------------------
+    # Solicitar 3 inicializações fixas via input()
+    # Adicionar 3 aleatórias
+    # Executar gradient descent com cada inicialização
+    # Plotar gráfico de contorno com trajetórias
+    # Salvar e mostrar o gráfico
+    experimento_taxas_aprendizado(x_aug, y, iterations)
+    experimento_inicializacoes(x_aug, y, iterations, theta0_vals, theta1_vals, j_vals)
 
 if __name__ == '__main__':
     main()
