@@ -75,7 +75,7 @@ def warm_up_exercise5(predictions, y):
     """
     # Calcula o vetor de erros quadráticos (squared errors) entre as predições e os valores reais
     # O vetor de erros quadráticos é calculado como a diferença entre as predições e os valores reais
-    return np.mean(errors) / 2
+    return (predictions - y) ** 2
 
 def warm_up_exercise6(errors):
     """
@@ -89,7 +89,7 @@ def warm_up_exercise6(errors):
     """
     # O custo médio é calculado como a média dos erros quadráticos
     # Obtenha usando np.mean e não esqueça de dividir por 2
-    return 
+    return np.mean(errors) / 2
 
 def warm_up_exercise7(X, y, theta):
     """
