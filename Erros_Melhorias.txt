@@ -1,0 +1,22 @@
+Erros indentificados: Para o valor da Taxa de aprendizado acima de 0.09, o valor dá Overflow, causando um erro no sistema.
+Para solucionar essa problemática, pode-se fazer a Normalização Z-score dos dados.
+em um código similar a esse:
+# Normalização dos dados
+x_mean = np.mean(x)
+x_std = np.std(x)
+x_norm = (x - x_mean) / x_std
+
+O código ficaria assim:
+# Carregando dados
+data = np.loadtxt('Data/ex1data1.txt', delimiter=',')
+x = data[:, 0]
+y = data[:, 1]
+m = len(y)
+
+# Normalização
+x_mean = np.mean(x)
+x_std = np.std(x)
+x_norm = (x - x_mean) / x_std
+
+# Construção da matriz de entrada com termo de bias
+x_aug = np.column_stack((np.ones(m), x_norm))
