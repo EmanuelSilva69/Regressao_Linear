@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 """
 @file regressao-linear-ex1.py
 @brief Exercise 2 - Linear Regression implementation with visualization.
